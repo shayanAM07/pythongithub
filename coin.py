@@ -18,6 +18,8 @@ def coin():
     prob_khat= khat_count / cointosstime
     prob_shir= shir_count / cointosstime
 
-    result_label.config()
+    result_label.config(text=f"Shir:{shir_count}\n khat:{khat_count}")
+
+    pro_label.config(text=f"")
 
     
