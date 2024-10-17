@@ -29,6 +29,10 @@ def coin():
     canvas.draw()
     canvas.get_tk_widget().pack()
 
+def close_window():
+  window.destroy()
+
+
 window = tk.Tk()
 window.title("coin")
 window.geometry("400x500")
@@ -40,6 +44,9 @@ entry.pack()
 
 btn=tk.Button(window,text="Start",command=coin)
 btn.pack()
+btn2=tk.Button(window, text="exit", command=close_window)
+btn2.pack()
+
 
 result_label=(tk.Label(text=""))
 result_label.pack()
