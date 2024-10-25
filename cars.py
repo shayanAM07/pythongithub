@@ -1,34 +1,36 @@
 from tkinter import *
 import sqlite3
-conn=sqlite3.connect("cars_databace.db")
-cursor=conn.cursor()
-cursor.execute(''' create table if not exists cars (
-id INTEGER PRIMARY KEY ,
-name TEXT,
-year INTEGER,
-engine TEXT,
-price REAL,
-)
+def creat_tabel():
+ conn=sqlite3.connect("cars_databace.db")
+ cursor=conn.cursor()
+ cursor.execute(''' create table if not exists cars (
+ id INTEGER PRIMARY KEY ,
+ name TEXT,
+ year INTEGER,
+ engine TEXT,
+ price REAL,
+ )
 
 
- ''')
+  ''')
 
-cursor.execute('''
-create table fi not exists features (
-id integer primary key,
-car_id integer,
-feature_name TEXT,
-feature_descraiption TEXT,
-forenign key (car_id) references cars (id)
+ cursor.execute('''
+ create table fi not exists features (
+ id integer primary key,
+ car_id integer,
+ feature_name TEXT,
+ feature_descraiption TEXT,
+ forenign key (car_id) references cars (id)
 
-)
-
-
+ )
 
 
- ''')
-conn.commit()
-conn.close()
+
+
+  ''')
+ conn.commit()
+ conn.close()
+creat_tabel()
 
 
 def add_car(name, year, engine):
@@ -51,5 +53,3 @@ def add_features(car_id, feature_name, feature_description):
     conn.commit()
     conn.close()
 
-
-    
