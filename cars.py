@@ -3,7 +3,7 @@ import sqlite3
 
 root = Tk()
 root.title("Car Database")
-root.geometry("600x500")
+root.geometry("1000x1000")
 
 
 def create_tables():
@@ -102,15 +102,14 @@ def add_initial_cars():
     cursor = conn.cursor()
 
     for car in cars:
-        # بررسی وجود خودرو با همان نام، سال و مشخصات موتور
+
         cursor.execute("SELECT * FROM cars WHERE name = ? AND year = ? AND engine = ?", (car[0], car[1], car[2]))
         result = cursor.fetchone()
 
-        if result is None:  # اگر ماشین در پایگاه داده نیست، اضافه کن
+        if result is None: 
             cursor.execute('''INSERT INTO cars (name, year, engine, price) VALUES (?, ?, ?, ?)''', (car[0], car[1], car[2], None))
             car_id = cursor.lastrowid
 
-            # افزودن امکانات رفاهی مربوط به این ماشین
             for feature in car[3]:
                 cursor.execute('''INSERT INTO features (car_id, feature_name, feature_description) VALUES (?, ?, ?)''', (car_id, feature, ""))
             
@@ -121,15 +120,14 @@ def add_initial_cars():
 add_initial_cars()
 
 
-
-car_list = Listbox(root, width=70, height=15)
+car_list = Listbox(root, width=85, height=25)
 car_list.pack(pady=10)
 car_list.bind('<<ListboxSelect>>', show_features)
 
 btn_show_cars = Button(root, text="Show Cars", command=show_cars)
 btn_show_cars.pack(pady=5)
 
-feature_list = Listbox(root, width=70, height=10)
+feature_list = Listbox(root, width=85, height=25)
 feature_list.pack(pady=10)
 
 root.mainloop()
