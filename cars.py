@@ -69,7 +69,7 @@ def show_cars():
     conn.close()
 
 
-def show_features():
+def show_features(event):
     selected_car = car_list.get(car_list.curselection())
     car_id = int(selected_car.split(",")[0].split(":")[1].strip())
 
@@ -114,16 +114,14 @@ add_initial_cars()
 
 
 
-car_list = Listbox(root, width=85, height=25)
+car_list = Listbox(root, width=70, height=15)
 car_list.pack(pady=10)
 car_list.bind('<<ListboxSelect>>', show_features)
 
 btn_show_cars = Button(root, text="Show Cars", command=show_cars)
-btn_show_features = Button(root, text="Show Features", command=show_features)
 btn_show_cars.pack(pady=5)
-btn_show_features.pack(pady=5)
 
-feature_list = Listbox(root, width=85, height=25)
+feature_list = Listbox(root, width=70, height=10)
 feature_list.pack(pady=10)
 
 root.mainloop()
