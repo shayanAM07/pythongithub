@@ -39,9 +39,16 @@ create_tables()
 def add_car(name, year, engine, price):
     conn = sqlite3.connect('cars_database.db')
     cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO cars (name, year, engine, price) VALUES (?, ?, ?, ?)
-    ''', (name, year, engine, price))
+
+    # بررسی کنید که ماشین قبلاً موجود نباشد
+    cursor.execute("SELECT * FROM cars WHERE name = ? AND year = ? AND engine = ?", (name, year, engine))
+    result = cursor.fetchone()
+
+    if result is None:
+        cursor.execute("INSERT INTO cars (name, year, engine, price) VALUES (?, ?, ?, ?)", (name, year, engine, price))
+        print("ماشین اضافه شد.")
+    else:
+        print("این ماشین قبلاً اضافه شده است.")
     conn.commit()
     conn.close()
 
@@ -102,13 +109,23 @@ def add_initial_cars():
     cursor = conn.cursor()
 
     for car in cars:
-        cursor.execute('''INSERT INTO cars (name, year, engine, price) VALUES (?, ?, ?, ?)''', (car[0], car[1], car[2], None))
-        car_id = cursor.lastrowid
-        for feature in car[3]:
-            cursor.execute('''INSERT INTO features (car_id, feature_name, feature_description) VALUES (?, ?, ?)''', (car_id, feature, ""))
+        # بررسی وجود خودرو با همان نام، سال و مشخصات موتور
+        cursor.execute("SELECT * FROM cars WHERE name = ? AND year = ? AND engine = ?", (car[0], car[1], car[2]))
+        result = cursor.fetchone()
+
+        if result is None:  # اگر ماشین در پایگاه داده نیست، اضافه کن
+            cursor.execute('''INSERT INTO cars (name, year, engine, price) VALUES (?, ?, ?, ?)''', (car[0], car[1], car[2], None))
+            car_id = cursor.lastrowid
+
+            # افزودن امکانات رفاهی مربوط به این ماشین
+            for feature in car[3]:
+                cursor.execute('''INSERT INTO features (car_id, feature_name, feature_description) VALUES (?, ?, ?)''', (car_id, feature, ""))
+        else:
+            print(f"ماشین '{car[0]}' با مشخصات مشابه در پایگاه داده موجود است و دوباره اضافه نمی‌شود.")
 
     conn.commit()
     conn.close()
+
 
 add_initial_cars()
 
